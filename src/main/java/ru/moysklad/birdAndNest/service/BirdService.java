@@ -48,8 +48,7 @@ public class BirdService {
         }
     }
 
-    public boolean dropBird(int id, NestRepository nestRepository, BirdRepository birdRepository){
-
+    public boolean dropBird(int id, BirdRepository birdRepository){
         try {
             if (birdRepository.findById(id).isPresent()){
                 birdRepository.deleteById(id);

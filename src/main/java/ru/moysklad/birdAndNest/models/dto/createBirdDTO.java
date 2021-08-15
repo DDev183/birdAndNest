@@ -28,6 +28,7 @@ public class createBirdDTO {
     public void setNest(NestEntity nestEntity) {
         this.nest = nestEntity;
     }
+
     public boolean isValid(NestRepository nestRepo){
         return !name.isEmpty() && !color.isEmpty() && nestRepo.findById(nest.getId()).isPresent();
     }

@@ -5,11 +5,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.moysklad.birdAndNest.models.dto.createBirdDTO;
+import ru.moysklad.birdAndNest.models.dto.createNestDTO;
 import ru.moysklad.birdAndNest.models.dto.editBirdDTO;
+import ru.moysklad.birdAndNest.models.dto.editNestDTO;
 import ru.moysklad.birdAndNest.models.entity.BirdEntity;
+import ru.moysklad.birdAndNest.models.entity.NestEntity;
 import ru.moysklad.birdAndNest.repositories.BirdRepository;
 import ru.moysklad.birdAndNest.repositories.NestRepository;
 import ru.moysklad.birdAndNest.service.BirdService;
+import ru.moysklad.birdAndNest.service.NestService;
 
 @RestController
 @RequestMapping(value = "/api")
@@ -36,7 +40,6 @@ public class GeneralController {
         }
     }
 
-
     @PostMapping(value = "/editBird")
     public ResponseEntity editBird(@RequestBody editBirdDTO dto){
         try {
@@ -51,7 +54,6 @@ public class GeneralController {
             return ResponseEntity.status(400).build();
         }
     }
-
 
     @PostMapping(value = "/createBird")
     public ResponseEntity createBird(@RequestBody createBirdDTO dto) {
@@ -68,12 +70,11 @@ public class GeneralController {
         }
     }
 
-
     @GetMapping(value = "/dropBird")
     public ResponseEntity dropBird(@RequestParam("id") int id){
         try {
             BirdService birdService = new BirdService();
-            boolean status = birdService.dropBird(id, nestRepo, birdRepo);
+            boolean status = birdService.dropBird(id, birdRepo);
             if (status){
                 return ResponseEntity.status(200).build();
             } else {
@@ -87,6 +88,73 @@ public class GeneralController {
     @GetMapping(value = "/getAllBirds")
     public ResponseEntity getAllBirds(){
         return ResponseEntity.ok(birdRepo.findAll());
+    }
+
+
+
+    @GetMapping(value = "/getNest")
+    public ResponseEntity getNest(@RequestParam("id") int id){
+        try {
+            NestService nestService = new NestService();
+            NestEntity nest = nestService.getNest(id, nestRepo);
+            if (nest != null){
+                return ResponseEntity.ok(nest);
+            } else {
+                return ResponseEntity.status(404).build();
+            }
+        } catch (Exception e){
+            return ResponseEntity.status(400).build();
+        }
+    }
+
+    @PostMapping(value = "/editNest")
+    public ResponseEntity editNest(@RequestBody editNestDTO dto) {
+        try {
+            NestService nestService = new NestService();
+            boolean status = nestService.editNest(dto, nestRepo);
+            if (status) {
+                return ResponseEntity.status(200).build();
+            } else {
+                return ResponseEntity.status(404).build();
+            }
+        } catch (Exception e){
+            return ResponseEntity.status(400).build();
+        }
+    }
+
+    @PostMapping(value = "/createNest")
+    public ResponseEntity createNest(@RequestBody createNestDTO dto) {
+        try {
+            NestService nestService = new NestService();
+            boolean status = nestService.createNest(dto, nestRepo);
+            if (status) {
+                return ResponseEntity.status(201).build();
+            } else {
+                return ResponseEntity.status(404).build();
+            }
+        } catch (Exception e){
+            return ResponseEntity.status(400).build();
+        }
+    }
+
+    @GetMapping(value = "/dropNest")
+    public ResponseEntity dropNest(@RequestParam("id") int id){
+        try {
+            NestService nestService = new NestService();
+            boolean status = nestService.dropNest(id, nestRepo);
+            if (status){
+                return ResponseEntity.status(200).build();
+            } else {
+                return ResponseEntity.status(404).build();
+            }
+        } catch (Exception e){
+            return ResponseEntity.status(400).build();
+        }
+    }
+
+    @GetMapping(value = "/getAllNests")
+    public ResponseEntity getAllNests(){
+        return ResponseEntity.ok(nestRepo.findAll());
     }
 
 

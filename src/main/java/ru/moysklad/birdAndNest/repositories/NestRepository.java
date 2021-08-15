@@ -6,7 +6,6 @@ import ru.moysklad.birdAndNest.models.entity.NestEntity;
 
 import java.util.Optional;
 
-
 @Repository
 public interface NestRepository extends JpaRepository<NestEntity, Integer> {
     Optional<NestEntity> findById(int id);

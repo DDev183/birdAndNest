@@ -1,6 +1,8 @@
 package ru.moysklad.birdAndNest.models.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import ru.moysklad.birdAndNest.models.dto.createNestDTO;
+import ru.moysklad.birdAndNest.models.dto.editNestDTO;
 
 import javax.persistence.*;
 import java.util.List;
@@ -45,5 +47,16 @@ public class NestEntity {
         this.linkedBirds = linkedBirds;
     }
     public NestEntity() {
+    }
+
+    public NestEntity(createNestDTO dto) {
+        this.name = dto.getName();
+        this.address = dto.getAddress();
+    }
+
+    public NestEntity(editNestDTO dto) {
+        this.id = dto.getId();
+        this.name = dto.getName();
+        this.address = dto.getAddress();
     }
 }

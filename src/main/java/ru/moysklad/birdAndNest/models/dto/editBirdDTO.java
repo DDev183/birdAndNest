@@ -11,7 +11,12 @@ public class editBirdDTO {
     private String color;
     private NestEntity nest;
 
-
+    public editBirdDTO(int id, String name, String color, NestEntity nest) {
+        this.id = id;
+        this.name = name;
+        this.color = color;
+        this.nest = nest;
+    }
 
     public int getId() {
         return id;
@@ -39,7 +44,7 @@ public class editBirdDTO {
     }
 
     public boolean isValid(NestRepository nestRepo){
-
         return id != 0 && !name.isEmpty() && !color.isEmpty() && nestRepo.findById(nest.getId()).isPresent();
     }
+
 }

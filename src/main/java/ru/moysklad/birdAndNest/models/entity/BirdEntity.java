@@ -21,6 +21,7 @@ public class BirdEntity {
     private NestEntity nest;
 
     public BirdEntity(editBirdDTO dto) {
+        this.id = dto.getId();
         this.name = dto.getName();
         this.color = dto.getColor();
         this.nest = dto.getNest();
