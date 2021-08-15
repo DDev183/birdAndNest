@@ -1,4 +1,4 @@
-package ru.moysklad.birdAndNest.models;
+package ru.moysklad.birdAndNest.models.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -6,7 +6,8 @@ import javax.persistence.*;
 import java.util.List;
 
 @Entity
-public class Nest {
+@Table(name = "nest")
+public class NestEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -17,42 +18,32 @@ public class Nest {
 
     @JsonIgnore
     @OneToMany(mappedBy = "nest")
-    private List<Bird> linkedBirds;
-
-
+    private List<BirdEntity> linkedBirds;
 
     public int getId() {
         return id;
     }
-
     public void setId(int id) {
         this.id = id;
     }
-
     public String getName() {
         return name;
     }
-
     public void setName(String name) {
         this.name = name;
     }
-
     public String getAddress() {
         return address;
     }
-
     public void setAddress(String address) {
         this.address = address;
     }
-
-    public List<Bird> getLinkedBirds() {
+    public List<BirdEntity> getLinkedBirds() {
         return linkedBirds;
     }
-
-    public void setLinkedBirds(List<Bird> linkedBirds) {
+    public void setLinkedBirds(List<BirdEntity> linkedBirds) {
         this.linkedBirds = linkedBirds;
     }
-
-    public Nest() {
+    public NestEntity() {
     }
 }

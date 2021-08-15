@@ -1,11 +1,13 @@
-package ru.moysklad.birdAndNest.models;
+package ru.moysklad.birdAndNest.models.entity;
 
-import ru.moysklad.birdAndNest.DTO.createBirdDTO;
+import ru.moysklad.birdAndNest.models.dto.createBirdDTO;
+import ru.moysklad.birdAndNest.models.dto.editBirdDTO;
 
 import javax.persistence.*;
 
 @Entity
-public class Bird {
+@Table(name = "bird")
+public class BirdEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -16,22 +18,25 @@ public class Bird {
 
     @ManyToOne()
     @JoinColumn(name = "nest_id")
-    private Nest nest;
+    private NestEntity nest;
 
-
-
+    public BirdEntity(editBirdDTO dto) {
+        this.name = dto.getName();
+        this.color = dto.getColor();
+        this.nest = dto.getNest();
+    }
 
     public void fly() {
         System.out.println("I'm bird " + name + " and I can fly!\n");
     }
 
-    public Bird(String name, String color, Nest nest) {
+    public BirdEntity(String name, String color, NestEntity nestEntity) {
         this.name = name;
         this.color = color;
-        this.nest = nest;
+        this.nest = nestEntity;
     }
 
-    public Bird(createBirdDTO dto){
+    public BirdEntity(createBirdDTO dto){
         this.name = dto.getName();
         this.color = dto.getColor();
         this.nest = dto.getNest();
@@ -40,35 +45,27 @@ public class Bird {
     public int getId() {
         return id;
     }
-
     public void setId(int id) {
         this.id = id;
     }
-
     public String getName() {
         return name;
     }
-
     public void setName(String name) {
         this.name = name;
     }
-
     public String getColor() {
         return color;
     }
-
     public void setColor(String color) {
         this.color = color;
     }
-
-    public Nest getNest() {
+    public NestEntity getNest() {
         return nest;
     }
-
-    public void setNest(Nest nest) {
-        this.nest = nest;
+    public void setNest(NestEntity nestEntity) {
+        this.nest = nestEntity;
     }
-
-    public Bird() {
+    public BirdEntity() {
     }
 }
