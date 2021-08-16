@@ -26,15 +26,17 @@ public class GeneralController {
     private BirdRepository birdRepo;
 
     @GetMapping(value = "/getBird")
-    public ResponseEntity getBird(@RequestParam("id") int id){
+    public ResponseEntity getBird(@RequestParam(name = "id", required = false) Integer id){
         try {
-            BirdService birdService = new BirdService();
-            BirdEntity bird = birdService.getBird(id, birdRepo);
-            if (bird != null){
-                return ResponseEntity.ok(bird);
-            } else {
-                return ResponseEntity.status(404).build();
-            }
+            if (id != null) {
+                BirdService birdService = new BirdService();
+                BirdEntity bird = birdService.getBird(id, birdRepo);
+                if (bird != null) {
+                    return ResponseEntity.ok(bird);
+                } else {
+                    return ResponseEntity.status(404).build();
+                }
+            } else return ResponseEntity.ok(birdRepo.findAll());
         } catch (Exception e){
             return ResponseEntity.status(400).build();
         }
@@ -83,11 +85,6 @@ public class GeneralController {
         } catch (Exception e){
             return ResponseEntity.status(400).build();
         }
-    }
-
-    @GetMapping(value = "/getAllBirds")
-    public ResponseEntity getAllBirds(){
-        return ResponseEntity.ok(birdRepo.findAll());
     }
 
 
@@ -152,10 +149,6 @@ public class GeneralController {
         }
     }
 
-    @GetMapping(value = "/getAllNests")
-    public ResponseEntity getAllNests(){
-        return ResponseEntity.ok(nestRepo.findAll());
-    }
 
 
 }
