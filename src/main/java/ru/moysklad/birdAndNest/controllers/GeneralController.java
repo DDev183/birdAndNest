@@ -10,8 +10,6 @@ import ru.moysklad.birdAndNest.models.dto.editBirdDTO;
 import ru.moysklad.birdAndNest.models.dto.editNestDTO;
 import ru.moysklad.birdAndNest.models.entity.BirdEntity;
 import ru.moysklad.birdAndNest.models.entity.NestEntity;
-import ru.moysklad.birdAndNest.repositories.BirdRepository;
-import ru.moysklad.birdAndNest.repositories.NestRepository;
 import ru.moysklad.birdAndNest.service.BirdService;
 import ru.moysklad.birdAndNest.service.NestService;
 
@@ -19,25 +17,26 @@ import ru.moysklad.birdAndNest.service.NestService;
 @RequestMapping(value = "/api")
 public class GeneralController {
 
-    @Autowired
-    private NestRepository nestRepo;
 
     @Autowired
-    private BirdRepository birdRepo;
+    private BirdService birdService;
+
+    @Autowired
+    private NestService nestService;
 
     @GetMapping(value = "/getBird")
     public ResponseEntity getBird(@RequestParam(name = "id", required = false) Integer id){
         try {
             if (id != null) {
-                BirdService birdService = new BirdService();
-                BirdEntity bird = birdService.getBird(id, birdRepo);
+                BirdEntity bird = birdService.getBird(id);
                 if (bird != null) {
                     return ResponseEntity.ok(bird);
                 } else {
                     return ResponseEntity.status(404).build();
                 }
-            } else return ResponseEntity.ok(birdRepo.findAll());
+            } else return ResponseEntity.ok(birdService.getAllBirds());
         } catch (Exception e){
+            System.out.println(e.getMessage());
             return ResponseEntity.status(400).build();
         }
     }
@@ -45,8 +44,7 @@ public class GeneralController {
     @PostMapping(value = "/editBird")
     public ResponseEntity editBird(@RequestBody editBirdDTO dto){
         try {
-            BirdService birdService = new BirdService();
-            boolean status = birdService.editBird(dto, birdRepo, nestRepo);
+            boolean status = birdService.editBird(dto);
             if (status){
                 return ResponseEntity.status(200).build();
             } else {
@@ -60,8 +58,7 @@ public class GeneralController {
     @PostMapping(value = "/createBird")
     public ResponseEntity createBird(@RequestBody createBirdDTO dto) {
         try {
-            BirdService birdService = new BirdService();
-            boolean status = birdService.createBird(dto, nestRepo, birdRepo);
+            boolean status = birdService.createBird(dto);
             if (status) {
                 return ResponseEntity.status(201).build();
             } else {
@@ -75,8 +72,7 @@ public class GeneralController {
     @GetMapping(value = "/dropBird")
     public ResponseEntity dropBird(@RequestParam("id") int id){
         try {
-            BirdService birdService = new BirdService();
-            boolean status = birdService.dropBird(id, birdRepo);
+            boolean status = birdService.dropBird(id);
             if (status){
                 return ResponseEntity.status(200).build();
             } else {
@@ -92,8 +88,7 @@ public class GeneralController {
     @GetMapping(value = "/getNest")
     public ResponseEntity getNest(@RequestParam("id") int id){
         try {
-            NestService nestService = new NestService();
-            NestEntity nest = nestService.getNest(id, nestRepo);
+            NestEntity nest = nestService.getNest(id);
             if (nest != null){
                 return ResponseEntity.ok(nest);
             } else {
@@ -107,8 +102,7 @@ public class GeneralController {
     @PostMapping(value = "/editNest")
     public ResponseEntity editNest(@RequestBody editNestDTO dto) {
         try {
-            NestService nestService = new NestService();
-            boolean status = nestService.editNest(dto, nestRepo);
+            boolean status = nestService.editNest(dto);
             if (status) {
                 return ResponseEntity.status(200).build();
             } else {
@@ -122,8 +116,7 @@ public class GeneralController {
     @PostMapping(value = "/createNest")
     public ResponseEntity createNest(@RequestBody createNestDTO dto) {
         try {
-            NestService nestService = new NestService();
-            boolean status = nestService.createNest(dto, nestRepo);
+            boolean status = nestService.createNest(dto);
             if (status) {
                 return ResponseEntity.status(201).build();
             } else {
@@ -137,8 +130,7 @@ public class GeneralController {
     @GetMapping(value = "/dropNest")
     public ResponseEntity dropNest(@RequestParam("id") int id){
         try {
-            NestService nestService = new NestService();
-            boolean status = nestService.dropNest(id, nestRepo);
+            boolean status = nestService.dropNest(id);
             if (status){
                 return ResponseEntity.status(200).build();
             } else {
